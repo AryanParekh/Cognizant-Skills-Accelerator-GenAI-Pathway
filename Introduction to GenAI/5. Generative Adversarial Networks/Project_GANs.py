@@ -1,6 +1,3 @@
-# This code works, but it needs to run for 2000 epochs to build the model.
-
-
 # Import necessary libraries
 import tensorflow as tf
 import tensorflow_datasets as tfds
@@ -130,13 +127,9 @@ def execute_gan():
     d_loss = BinaryCrossentropy()
     fashgan = FashionGAN(generator, discriminator)
     fashgan.compile(g_opt, d_opt, g_loss, d_loss)
-    # hist = fashgan.fit(ds, epochs=2000, callbacks=[ModelMonitor()])
-    imgs = generator.predict(tf.random.normal((16, 128, 1)))
-    fig, ax = plt.subplots(ncols=4, nrows=4, figsize=(10,10))
-    for r in range(4): 
-        for c in range(4): 
-            ax[r][c].imshow(imgs[(r+1)*(c+1)-1])
-    plt.show()
+    hist = fashgan.fit(ds, epochs=2000, callbacks=[ModelMonitor()])
+    generator.save('generator_2000.keras')
+    discriminator.save('discriminator_2000.keras')
 
 # Execute
 execute_gan()
